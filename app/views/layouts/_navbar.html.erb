@@ -1,0 +1,30 @@
+<%# app/views/layouts/_navbar.html.erb %>
+<nav class="bg-white shadow-sm border-b border-gray-200">
+  <div class="container mx-auto px-4 max-w-5xl flex items-center justify-between h-14">
+
+    <div class="flex items-center gap-6">
+      <%= link_to "Chamados", tickets_path, class: "font-semibold text-gray-800 hover:text-blue-600" %>
+
+      <% if current_user&.admin? %>
+        <%= link_to "Blocos", blocks_path, class: "text-gray-600 hover:text-blue-600 text-sm" %>
+        <%= link_to "Usuários", users_path, class: "text-gray-600 hover:text-blue-600 text-sm" %>
+        <%= link_to "Tipos de Chamado", ticket_types_path, class: "text-gray-600 hover:text-blue-600 text-sm" %>
+        <%= link_to "Status", ticket_statuses_path, class: "text-gray-600 hover:text-blue-600 text-sm" %>
+      <% end %>
+    </div>
+
+    <div class="flex items-center gap-4 text-sm">
+      <% if logged_in? %>
+        <span class="text-gray-500"><%= current_user.name %></span>
+        <span class="text-xs bg-gray-100 text-gray-500 px-2 py-0.5 rounded-full">
+          <%= current_user.role %>
+        </span>
+        <%= button_to "Sair", logout_path, method: :delete,
+              class: "text-red-500 hover:text-red-700" %>
+      <% else %>
+        <%= link_to "Login", login_path, class: "text-blue-600 hover:underline" %>
+      <% end %>
+    </div>
+
+  </div>
+</nav>

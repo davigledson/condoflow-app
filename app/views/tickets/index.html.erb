@@ -1,0 +1,67 @@
+<%# app/views/tickets/index.html.erb %>
+<div class="flex items-center justify-between mb-6">
+  <h1 class="text-xl font-semibold text-gray-800">Chamados</h1>
+  <% if current_user.resident? %>
+    <%= link_to "Novo Chamado", new_ticket_path, class: "bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700" %>
+  <% end %>
+</div>
+
+<%# Filtros — visíveis para admin e collaborator %>
+<% if current_user.admin? || current_user.collaborator? %>
+  <%= form_with url: tickets_path, method: :get, local: true, class: "flex gap-3 mb-6 flex-wrap" do |f| %>
+    <%= f.select :status_id,
+          options_from_collection_for_select(TicketStatus.all, :id, :name, params[:status_id]),
+          { include_blank: "Todos os status" },
+          class: "border border-gray-300 rounded-lg px-3 py-2 text-sm" %>
+
+    <%= f.select :type_id,
+          options_from_collection_for_select(TicketType.all, :id, :title, params[:type_id]),
+          { include_blank: "Todos os tipos" },
+          class: "border border-gray-300 rounded-lg px-3 py-2 text-sm" %>
+
+    <%= f.select :block_id,
+          options_from_collection_for_select(Block.all, :id, :identifier, params[:block_id]),
+          { include_blank: "Todos os blocos" },
+          class: "border border-gray-300 rounded-lg px-3 py-2 text-sm" %>
+
+    <%= f.submit "Filtrar", class: "bg-gray-700 text-white px-4 py-2 rounded-lg text-sm hover:bg-gray-800 cursor-pointer" %>
+    <%= link_to "Limpar", tickets_path, class: "text-sm text-gray-500 hover:underline self-center" %>
+  <% end %>
+<% end %>
+
+<div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+  <% if @tickets.empty? %>
+    <p class="text-center text-gray-400 py-12 text-sm">Nenhum chamado encontrado.</p>
+  <% else %>
+    <table class="w-full text-sm">
+      <thead class="bg-gray-50 border-b border-gray-200 text-gray-500 text-left">
+        <tr>
+          <th class="px-4 py-3">#</th>
+          <th class="px-4 py-3">Unidade</th>
+          <th class="px-4 py-3">Tipo</th>
+          <th class="px-4 py-3">Status</th>
+          <th class="px-4 py-3">Aberto em</th>
+          <th class="px-4 py-3"></th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-100">
+        <% @tickets.each do |ticket| %>
+          <tr class="hover:bg-gray-50">
+            <td class="px-4 py-3 text-gray-400">#<%= ticket.id %></td>
+            <td class="px-4 py-3 font-medium text-gray-700"><%= ticket.unit.identifier %></td>
+            <td class="px-4 py-3 text-gray-600"><%= ticket.ticket_type.title %></td>
+            <td class="px-4 py-3">
+              <span class="px-2 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-700">
+                <%= ticket.ticket_status.name %>
+              </span>
+            </td>
+            <td class="px-4 py-3 text-gray-400"><%= ticket.created_at.strftime("%d/%m/%Y %H:%M") %></td>
+            <td class="px-4 py-3">
+              <%= link_to "Ver", ticket_path(ticket), class: "text-blue-600 hover:underline" %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% end %>
+</div>
