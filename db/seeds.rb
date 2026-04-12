@@ -45,6 +45,47 @@ morador2 = User.create!(
   role: :resident
 )
 
+# Moradores (residentes) - aproximadamente 27 para chegar a 30 no total
+moradores = [
+  { name: "João Silva", email: "joao.silva@email.com" },
+  { name: "Maria Souza", email: "maria.souza@email.com" },
+  { name: "Pedro Santos", email: "pedro.santos@email.com" },
+  { name: "Ana Paula Oliveira", email: "ana.oliveira@email.com" },
+  { name: "Lucas Lima", email: "lucas.lima@email.com" },
+  { name: "Juliana Costa", email: "juliana.costa@email.com" },
+  { name: "Rafael Almeida", email: "rafael.almeida@email.com" },
+  { name: "Patrícia Rodrigues", email: "patricia.rodrigues@email.com" },
+  { name: "Bruno Ferreira", email: "bruno.ferreira@email.com" },
+  { name: "Carla Nunes", email: "carla.nunes@email.com" },
+  { name: "Thiago Gomes", email: "thiago.gomes@email.com" },
+  { name: "Larissa Martins", email: "larissa.martins@email.com" },
+  { name: "Felipe Rocha", email: "felipe.rocha@email.com" },
+  { name: "Aline Ribeiro", email: "aline.ribeiro@email.com" },
+  { name: "Rodrigo Mendes", email: "rodrigo.mendes@email.com" },
+  { name: "Camila Cardoso", email: "camila.cardoso@email.com" },
+  { name: "Marcos Paulo", email: "marcos.paulo@email.com" },
+  { name: "Vanessa Dias", email: "vanessa.dias@email.com" },
+  { name: "Diego Barbosa", email: "diego.barbosa@email.com" },
+  { name: "Renata Castro", email: "renata.castro@email.com" },
+  { name: "Gustavo Moreira", email: "gustavo.moreira@email.com" },
+  { name: "Tatiana Azevedo", email: "tatiana.azevedo@email.com" },
+  { name: "Eduardo Pires", email: "eduardo.pires@email.com" },
+  { name: "Simone Lopes", email: "simone.lopes@email.com" },
+  { name: "André Carvalho", email: "andre.carvalho@email.com" },
+  { name: "Michele Souza", email: "michele.souza@email.com" },
+  { name: "Leandro Nogueira", email: "leandro.nogueira@email.com" }
+]
+
+moradores.each do |m|
+  User.create!(
+    name: m[:name],
+    email: m[:email],
+    password: "123456",
+    password_confirmation: "123456",
+    role: :resident
+  )
+end
+
 puts "Criando status de chamado..."
 
 status_aberto = TicketStatus.create!(
