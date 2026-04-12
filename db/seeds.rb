@@ -1,9 +1,132 @@
-# This file should ensure the existence of records required to run the application in every environment (production,
-# development, test). The code here should be idempotent so that it can be executed at any point in every environment.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Example:
-#
-#   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
-#     MovieGenre.find_or_create_by!(name: genre_name)
-#   end
+# db/seeds.rb
+
+puts "Limpando banco..."
+TicketStatusHistory.delete_all
+Comment.delete_all
+Ticket.delete_all
+UnitResident.delete_all
+Unit.delete_all
+Block.delete_all
+TicketType.delete_all
+TicketStatus.delete_all
+User.delete_all
+
+puts "Criando usuários..."
+
+admin = User.create!(
+  name: "Administrador",
+  email: "admin@condominio.com",
+  password: "123456",
+  password_confirmation: "123456",
+  role: :admin
+)
+
+collaborator = User.create!(
+  name: "Colaborador",
+  email: "colaborador@condominio.com",
+  password: "123456",
+  password_confirmation: "123456",
+  role: :collaborator
+)
+
+morador1 = User.create!(
+  name: "João Silva",
+  email: "joao@email.com",
+  password: "123456",
+  password_confirmation: "123456",
+  role: :resident
+)
+
+morador2 = User.create!(
+  name: "Maria Souza",
+  email: "maria@email.com",
+  password: "123456",
+  password_confirmation: "123456",
+  role: :resident
+)
+
+puts "Criando status de chamado..."
+
+status_aberto = TicketStatus.create!(
+  name: "Aberto",
+  is_default: true,
+  is_final: false
+)
+
+TicketStatus.create!(
+  name: "Em andamento",
+  is_default: false,
+  is_final: false
+)
+
+status_concluido = TicketStatus.create!(
+  name: "Concluído",
+  is_default: false,
+  is_final: true
+)
+
+TicketStatus.create!(
+  name: "Cancelado",
+  is_default: false,
+  is_final: true
+)
+
+puts "Criando tipos de chamado..."
+
+TicketType.create!(title: "Manutenção Elétrica", sla_hours: 24)
+TicketType.create!(title: "Manutenção Hidráulica", sla_hours: 48)
+TicketType.create!(title: "Limpeza", sla_hours: 12)
+tipo_seguranca = TicketType.create!(title: "Segurança", sla_hours: 2)
+
+puts "Criando blocos e unidades..."
+
+# O after_create do Block já gera as unidades automaticamente
+bloco_a = Block.create!(identifier: "A", floors_count: 3, units_per_floor: 4)
+bloco_b = Block.create!(identifier: "B", floors_count: 2, units_per_floor: 3)
+
+puts "Vinculando moradores às unidades..."
+
+unidade_a0101 = bloco_a.units.find_by(floor_number: 1, unit_number: 1)
+unidade_a0102 = bloco_a.units.find_by(floor_number: 1, unit_number: 2)
+unidade_b0101 = bloco_b.units.find_by(floor_number: 1, unit_number: 1)
+
+UnitResident.create!(unit: unidade_a0101, user: morador1)
+UnitResident.create!(unit: unidade_a0102, user: morador1)  # joao tem 2 unidades
+UnitResident.create!(unit: unidade_b0101, user: morador2)
+
+puts "Criando chamados..."
+
+ticket1 = Ticket.create!(
+  unit: unidade_a0101,
+  user: morador1,
+  ticket_type: tipo_seguranca,
+  description: "Câmera do hall de entrada com defeito."
+)
+
+ticket2 = Ticket.create!(
+  unit: unidade_b0101,
+  user: morador2,
+  ticket_type: TicketType.find_by(title: "Limpeza"),
+  description: "Corredor do 1º andar precisa de limpeza urgente."
+)
+
+puts "Adicionando comentários..."
+
+Comment.create!(ticket: ticket1, user: morador1, body: "Já faz 3 dias com esse problema.")
+Comment.create!(ticket: ticket1, user: collaborator, body: "Estamos verificando, obrigado.")
+Comment.create!(ticket: ticket2, user: morador2, body: "Situação piorou hoje.")
+
+puts "Registrando mudança de status..."
+
+ticket1.update!(ticket_status: TicketStatus.find_by(name: "Em andamento"))
+TicketStatusHistory.create!(
+  ticket: ticket1,
+  ticket_status: TicketStatus.find_by(name: "Em andamento"),
+  user: collaborator
+)
+
+puts "\nPronto! Credenciais:"
+puts "  admin:        admin@condominio.com       / 123456"
+puts "  collaborator: colaborador@condominio.com / 123456"
+puts "  morador 1:    joao@email.com             / 123456"
+puts "  morador 2:    maria@email.com            / 123456"
