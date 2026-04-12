@@ -1,0 +1,86 @@
+<%# app/views/tickets/show.html.erb %>
+<div class="max-w-2xl mx-auto space-y-6">
+
+  <div class="bg-white rounded-xl border border-gray-200 p-6">
+    <div class="flex items-start justify-between mb-4">
+      <div>
+        <p class="text-xs text-gray-400 mb-1">Chamado #<%= @ticket.id %></p>
+        <h1 class="text-lg font-semibold text-gray-800"><%= @ticket.ticket_type.title %></h1>
+        <p class="text-sm text-gray-500 mt-1">Unidade <%= @ticket.unit.identifier %> &mdash; <%= @ticket.user.name %></p>
+      </div>
+      <span class="px-3 py-1 rounded-full text-xs font-medium bg-blue-50 text-blue-700">
+        <%= @ticket.ticket_status.name %>
+      </span>
+    </div>
+
+    <p class="text-sm text-gray-700 leading-relaxed"><%= @ticket.description %></p>
+
+    <div class="mt-4 text-xs text-gray-400">
+      Aberto em <%= @ticket.created_at.strftime("%d/%m/%Y às %H:%M") %>
+      <% if @ticket.closed_at %>
+        &mdash; Concluído em <%= @ticket.closed_at.strftime("%d/%m/%Y às %H:%M") %>
+      <% end %>
+    </div>
+  </div>
+
+  <%# Atualizar status — só admin e collaborator %>
+  <% if current_user.admin? || current_user.collaborator? %>
+    <div class="bg-white rounded-xl border border-gray-200 p-6">
+      <h2 class="text-sm font-semibold text-gray-700 mb-3">Atualizar Status</h2>
+      <%= form_with url: update_status_ticket_path(@ticket), method: :patch, local: true, class: "flex gap-3" do |f| %>
+        <%= f.select :ticket_status_id,
+              options_from_collection_for_select(TicketStatus.all, :id, :name, @ticket.ticket_status_id),
+              {},
+              class: "border border-gray-300 rounded-lg px-3 py-2 text-sm flex-1" %>
+        <%= f.submit "Atualizar", class: "bg-gray-700 text-white px-4 py-2 rounded-lg text-sm hover:bg-gray-800 cursor-pointer" %>
+      <% end %>
+    </div>
+  <% end %>
+
+  <%# Histórico de status %>
+  <% if @ticket.ticket_status_histories.any? %>
+    <div class="bg-white rounded-xl border border-gray-200 p-6">
+      <h2 class="text-sm font-semibold text-gray-700 mb-3">Histórico de Status</h2>
+      <ul class="space-y-2">
+        <% @ticket.ticket_status_histories.includes(:ticket_status, :user).order(created_at: :asc).each do |h| %>
+          <li class="text-xs text-gray-500">
+            <span class="font-medium text-gray-700"><%= h.user.name %></span>
+            alterou para
+            <span class="font-medium text-gray-700"><%= h.ticket_status.name %></span>
+            em <%= h.created_at.strftime("%d/%m/%Y %H:%M") %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%# Comentários %>
+  <div class="bg-white rounded-xl border border-gray-200 p-6">
+    <h2 class="text-sm font-semibold text-gray-700 mb-4">Comentários</h2>
+
+    <% if @comments.empty? %>
+      <p class="text-sm text-gray-400 mb-4">Nenhum comentário ainda.</p>
+    <% else %>
+      <ul class="space-y-4 mb-6">
+        <% @comments.each do |comment| %>
+          <li class="flex gap-3">
+            <div class="w-7 h-7 rounded-full bg-gray-200 flex items-center justify-center text-xs font-medium text-gray-600 shrink-0">
+              <%= comment.user.name[0].upcase %>
+            </div>
+            <div>
+              <p class="text-xs font-medium text-gray-700"><%= comment.user.name %> <span class="text-gray-400 font-normal"><%= comment.created_at.strftime("%d/%m %H:%M") %></span></p>
+              <p class="text-sm text-gray-600 mt-0.5"><%= comment.body %></p>
+            </div>
+          </li>
+        <% end %>
+      </ul>
+    <% end %>
+
+    <%= form_with model: [@ticket, @comment], local: true, class: "flex gap-3" do |f| %>
+      <%= f.text_area :body, placeholder: "Adicionar comentário...", rows: 2,
+            class: "flex-1 border border-gray-300 rounded-lg px-3 py-2 text-sm resize-none" %>
+      <%= f.submit "Enviar", class: "bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700 cursor-pointer self-end" %>
+    <% end %>
+  </div>
+
+</div>
