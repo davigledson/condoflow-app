@@ -1,3 +1,4 @@
+# config/routes.rb
 Rails.application.routes.draw do
   root "tickets#index"
 
@@ -8,10 +9,8 @@ Rails.application.routes.draw do
   resources :users
   resources :blocks do
     resources :units, only: [] do
-      member do
-        post   :unit_residents, action: :create,  controller: "unit_residents"
-        delete :unit_residents, action: :destroy, controller: "unit_residents"
-      end
+      post   :link_resident,   on: :member, to: "unit_residents#create"
+      delete :unlink_resident, on: :member, to: "unit_residents#destroy"
     end
   end
 

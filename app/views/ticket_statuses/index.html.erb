@@ -1,0 +1,45 @@
+<%# app/views/ticket_statuses/index.html.erb %>
+<div class="flex items-center justify-between mb-6">
+  <h1 class="text-xl font-semibold text-gray-800">Status de Chamado</h1>
+  <%= link_to "Novo Status", new_ticket_status_path, class: "bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700" %>
+</div>
+
+<div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+  <table class="w-full text-sm">
+    <thead class="bg-gray-50 border-b border-gray-200 text-gray-500 text-left">
+      <tr>
+        <th class="px-4 py-3">Nome</th>
+        <th class="px-4 py-3">Padrão</th>
+        <th class="px-4 py-3">Final</th>
+        <th class="px-4 py-3"></th>
+      </tr>
+    </thead>
+    <tbody class="divide-y divide-gray-100">
+      <% @ticket_statuses.each do |status| %>
+        <tr class="hover:bg-gray-50">
+          <td class="px-4 py-3 font-medium text-gray-700"><%= status.name %></td>
+          <td class="px-4 py-3">
+            <% if status.is_default %>
+              <span class="text-xs bg-blue-50 text-blue-700 px-2 py-0.5 rounded-full">sim</span>
+            <% else %>
+              <span class="text-gray-300 text-xs">não</span>
+            <% end %>
+          </td>
+          <td class="px-4 py-3">
+            <% if status.is_final %>
+              <span class="text-xs bg-green-50 text-green-700 px-2 py-0.5 rounded-full">sim</span>
+            <% else %>
+              <span class="text-gray-300 text-xs">não</span>
+            <% end %>
+          </td>
+          <td class="px-4 py-3 flex gap-3">
+            <%= link_to "Editar", edit_ticket_status_path(status), class: "text-blue-600 hover:underline" %>
+            <%= button_to "Remover", ticket_status_path(status), method: :delete,
+                  data: { confirm: "Tem certeza?" },
+                  class: "text-red-500 hover:underline bg-transparent border-0 p-0 cursor-pointer text-sm" %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
