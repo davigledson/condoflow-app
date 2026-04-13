@@ -8,35 +8,38 @@
     <meta name="mobile-web-app-capable" content="yes">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-
     <%= yield :head %>
-
-    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
-    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
-
     <link rel="icon" href="/icon.png" type="image/png">
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/icon.png">
-
-    <%# Includes all stylesheet files in app/assets/stylesheets %>
+    <%= favicon_link_tag 'favicon.ico' %>
     <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
-   
-   
     <%= javascript_importmap_tags %>
+
+    <%# Aplica o tema ANTES de renderizar para evitar flash de tela branca %>
+    <script>
+      const saved = localStorage.getItem('theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (saved === 'dark' || (!saved && prefersDark)) {
+        document.documentElement.classList.add('dark');
+      }
+    </script>
   </head>
 
-  <body class="bg-gray-100 min-h-screen flex flex-col">
+  <body class="bg-gray-100 dark:bg-gray-900 min-h-screen flex">
 
-  <%= render "layouts/navbar" %>
+    <%= render "layouts/navbar" %>
 
-  <main class="flex-1 container mx-auto px-4 py-6 max-w-5xl">
-    <%= render "layouts/flash" %>
-    <%= yield %>
-  </main>
+    <div class="flex-1 flex flex-col ml-56 bg-gray-100 dark:bg-gray-900">
+      <main class="flex-1 px-6 py-6 max-w-5xl w-full mx-auto">
+        <%= render "layouts/flash" %>
+        <%= yield %>
+      </main>
 
-  <footer class="text-center text-sm text-gray-400 py-4">
-    Condomínio &copy; <%= Date.current.year %>
-  </footer>
+      <footer class="text-center text-sm text-gray-400 dark:text-gray-600 py-4">
+        Condomínio &copy; <%= Date.current.year %>
+      </footer>
+    </div>
 
-</body>
+  </body>
 </html>

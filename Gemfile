@@ -69,3 +69,8 @@ group :test do
 end
 
 gem "tailwindcss-rails", "~> 4.4"
+
+gem 'hotwire-livereload' #para live reload
+
+# Gemfile
+gem 'wdm', '>= 0.1.0'#para o monitorar arquivos no windows

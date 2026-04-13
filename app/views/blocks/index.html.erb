@@ -1,12 +1,12 @@
 <%# app/views/blocks/index.html.erb %>
 <div class="flex items-center justify-between mb-6">
-  <h1 class="text-xl font-semibold text-gray-800">Blocos</h1>
+  <h1 class="text-xl font-semibold text-gray-800 dark:text-gray-100">Blocos</h1>
   <%= link_to "Novo Bloco", new_block_path, class: "bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700" %>
 </div>
 
-<div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+<div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
   <table class="w-full text-sm">
-    <thead class="bg-gray-50 border-b border-gray-200 text-gray-500 text-left">
+    <thead class="bg-gray-50 dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400 text-left">
       <tr>
         <th class="px-4 py-3">Identificador</th>
         <th class="px-4 py-3">Andares</th>
@@ -15,19 +15,19 @@
         <th class="px-4 py-3"></th>
       </tr>
     </thead>
-    <tbody class="divide-y divide-gray-100">
+    <tbody class="divide-y divide-gray-100 dark:divide-gray-700">
       <% @blocks.each do |block| %>
-        <tr class="hover:bg-gray-50">
-          <td class="px-4 py-3 font-medium text-gray-700">Bloco <%= block.identifier %></td>
-          <td class="px-4 py-3 text-gray-500"><%= block.floors_count %></td>
-          <td class="px-4 py-3 text-gray-500"><%= block.units_per_floor %></td>
-          <td class="px-4 py-3 text-gray-500"><%= block.units.count %></td>
+        <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
+          <td class="px-4 py-3 font-medium text-gray-700 dark:text-gray-200">Bloco <%= block.identifier %></td>
+          <td class="px-4 py-3 text-gray-500 dark:text-gray-400"><%= block.floors_count %></td>
+          <td class="px-4 py-3 text-gray-500 dark:text-gray-400"><%= block.units_per_floor %></td>
+          <td class="px-4 py-3 text-gray-500 dark:text-gray-400"><%= block.units.count %></td>
           <td class="px-4 py-3 flex gap-3">
-            <%= link_to "Ver unidades", block_path(block), class: "text-blue-600 hover:underline" %>
-            <%= link_to "Editar", edit_block_path(block), class: "text-gray-500 hover:underline" %>
+            <%= link_to "Ver unidades", block_path(block), class: "text-blue-500 dark:text-blue-400 hover:underline" %>
+            <%= link_to "Editar", edit_block_path(block), class: "text-gray-500 dark:text-gray-400 hover:underline" %>
             <%= button_to "Remover", block_path(block), method: :delete,
                   data: { confirm: "Remover o bloco e todas as unidades?" },
-                  class: "text-red-500 hover:underline bg-transparent border-0 p-0 cursor-pointer text-sm" %>
+                  class: "text-red-500 dark:text-red-400 hover:underline bg-transparent border-0 p-0 cursor-pointer text-sm" %>
           </td>
         </tr>
       <% end %>
