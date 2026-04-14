@@ -9,6 +9,9 @@ class User < ApplicationRecord
   has_many :comments, foreign_key: :user_id
   has_many :ticket_status_histories, foreign_key: :user_id
 
+  has_many :collaborator_ticket_types, foreign_key: :user_id, dependent: :destroy
+  has_many :assigned_ticket_types, through: :collaborator_ticket_types, source: :ticket_type
+  
   validates :name, presence: true
   validates :email, presence: true, uniqueness: true,
             format: { with: URI::MailTo::EMAIL_REGEXP }

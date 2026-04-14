@@ -1,0 +1,34 @@
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: condoflow
+      POSTGRES_PASSWORD: condoflow
+      POSTGRES_DB: condoflow_app_production
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U condoflow"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  web:
+    build: .
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file:
+      - .env
+    environment:
+      MYAPP_DB_USERNAME: condoflow
+      MYAPP_DB_PASSWORD: condoflow
+      MYAPP_DB_HOST: db
+      RAILS_LOG_TO_STDOUT: "true"
+    ports:
+      - "80:80"
+
+volumes:
+  postgres_data:
