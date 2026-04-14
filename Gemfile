@@ -40,8 +40,7 @@ gem "kamal", require: false
 # Add HTTP asset caching/compression and X-Sendfile acceleration to Puma [https://github.com/basecamp/thruster/]
 gem "thruster", require: false
 
-# Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
-gem "image_processing", "~> 1.2"
+
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
@@ -76,3 +75,8 @@ gem 'hotwire-livereload' #para live reload
 gem "wdm", "~> 0.2.0", platforms: [:mingw, :x64_mingw, :mswin] #para o monitorar arquivos no windows
 
 gem "kaminari" # para paginação
+
+#fazer o previews das imagems
+# Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
+gem "image_processing", "~> 1.2"
+gem 'mini_magick'

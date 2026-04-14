@@ -4,6 +4,9 @@ class Ticket < ApplicationRecord
   belongs_to :ticket_type
   belongs_to :ticket_status
 
+
+  has_many_attached :attachments
+
   has_many :comments, dependent: :destroy
   has_many :ticket_status_histories, dependent: :destroy
 
