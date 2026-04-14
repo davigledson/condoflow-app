@@ -3,6 +3,8 @@ class Comment < ApplicationRecord
   belongs_to :ticket
   belongs_to :user
 
+   has_many_attached :attachments
+   
   validates :body, presence: true
 
   validate :user_can_comment

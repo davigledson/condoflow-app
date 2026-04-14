@@ -411,6 +411,7 @@ DEPENDENCIES
   jbuilder
   kamal
   kaminari
+  mini_magick
   pg
   propshaft
   puma (>= 5.0)

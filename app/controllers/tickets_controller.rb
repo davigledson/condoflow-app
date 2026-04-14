@@ -73,6 +73,6 @@ class TicketsController < ApplicationController
   end
 
   def ticket_params
-    params.require(:ticket).permit(:unit_id, :ticket_type_id, :description)
+    params.require(:ticket).permit(:unit_id, :ticket_type_id, :description, attachments: [])
   end
 end
