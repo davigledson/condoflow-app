@@ -4,7 +4,7 @@ class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
 
   def index
-    @users = User.all.order(:name)
+     @users = User.all.order(:name).page(params[:page]).per(20)
   end
 
   def show; end

@@ -4,7 +4,7 @@ class TicketTypesController < ApplicationController
   before_action :set_ticket_type, only: [:edit, :update, :destroy]
 
   def index
-    @ticket_types = TicketType.all.order(:title)
+     @ticket_types = TicketType.all.order(:title).page(params[:page]).per(20)
   end
 
   def new

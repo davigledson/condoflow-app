@@ -4,6 +4,7 @@ class TicketsController < ApplicationController
   def index
     @tickets = scoped_tickets.includes(:unit, :ticket_type, :ticket_status, :user)
                              .order(created_at: :desc)
+                             .page(params[:page]).per(15)
 
     # Filtros (usados pelo collaborator e admin)
     @tickets = @tickets.where(ticket_status_id: params[:status_id]) if params[:status_id].present?

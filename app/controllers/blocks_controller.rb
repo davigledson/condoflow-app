@@ -4,7 +4,7 @@ class BlocksController < ApplicationController
   before_action :set_block, only: [:show, :edit, :update, :destroy]
 
   def index
-    @blocks = Block.includes(:units).order(:identifier)
+     @blocks = Block.includes(:units).order(:identifier).page(params[:page]).per(20)
   end
 
   def show
