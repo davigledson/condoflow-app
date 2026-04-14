@@ -21,3 +21,4 @@ production:
   username: <%= ENV["MYAPP_DB_USERNAME"] %>
   password: <%= ENV["MYAPP_DB_PASSWORD"] %>
   host: <%= ENV["MYAPP_DB_HOST"] %>
+  port: 5432

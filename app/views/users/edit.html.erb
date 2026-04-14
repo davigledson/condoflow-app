@@ -1,5 +1,38 @@
 <%# app/views/users/edit.html.erb %>
 <div class="max-w-lg mx-auto">
-  <h1 class="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-6 dark:text-gray-100">Editar Usuário</h1>
+  <h1 class="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-6">Editar Usuário</h1>
   <%= render "form", user: @user %>
+
+  <% if @user.collaborator? %>
+    <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 mt-6">
+      <h2 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-4">Tipos de Chamado Atribuídos</h2>
+
+      <% if @user.assigned_ticket_types.any? %>
+        <ul class="mb-4 space-y-2">
+          <% @user.assigned_ticket_types.each do |tt| %>
+            <li class="flex items-center justify-between text-sm text-gray-700 dark:text-gray-300">
+              <%= tt.title %>
+              <%= button_to "Remover",
+                    unassign_ticket_type_user_path(@user, ticket_type_id: tt.id),
+                    method: :delete,
+                    data: { confirm: "Remover atribuição?" },
+                    class: "text-red-500 dark:text-red-400 text-xs hover:underline bg-transparent border-0 p-0 cursor-pointer" %>
+            </li>
+          <% end %>
+        </ul>
+      <% else %>
+        <p class="text-sm text-gray-400 dark:text-gray-500 mb-4">Nenhum tipo atribuído ainda.</p>
+      <% end %>
+
+      <%= form_with url: assign_ticket_type_user_path(@user), method: :post, local: true, class: "flex gap-3" do |f| %>
+        <%= f.select :ticket_type_id,
+              options_from_collection_for_select(
+                TicketType.where.not(id: @user.assigned_ticket_types.pluck(:id)), :id, :title
+              ),
+              { include_blank: "Selecionar tipo..." },
+              class: "border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 text-sm flex-1 bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-100" %>
+        <%= f.submit "Atribuir", class: "bg-gray-700 dark:bg-gray-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-gray-800 cursor-pointer" %>
+      <% end %>
+    </div>
+  <% end %>
 </div>

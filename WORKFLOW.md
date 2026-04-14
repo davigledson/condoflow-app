@@ -11,7 +11,7 @@ rails db:seed
 
 ---
 
-## ▶Rodar o projeto
+## Rodar o projeto
 
 ```bash
 
@@ -39,6 +39,8 @@ rails db:seed          # popula dados iniciais
 
 ```bash
 rails generate model Nome campo:tipo
+
+rails generate model Nome --no-migration
 ```
 
 ### Controller
@@ -108,6 +110,7 @@ tail -f log/development.log
 
 ```bash
 rails credentials:edit
+rails secret #gerar chave nova
 ```
 
 ---

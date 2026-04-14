@@ -6,16 +6,25 @@ Rails.application.routes.draw do
   post   "/login",  to: "sessions#create"
   delete "/logout", to: "sessions#destroy",  as: :logout
 
-  resources :users
+  resources :users do
+    member do
+      post   :assign_ticket_type,   to: "collaborator_ticket_types#create"
+      delete :unassign_ticket_type, to: "collaborator_ticket_types#destroy"
+    end
+  end
+
   resources :blocks do
     resources :units, only: [] do
-      post   :link_resident,   on: :member, to: "unit_residents#create"
-      delete :unlink_resident, on: :member, to: "unit_residents#destroy"
+      member do
+        post   :link_resident,   to: "unit_residents#create"
+        delete :unlink_resident, to: "unit_residents#destroy"
+      end
     end
   end
 
   resources :ticket_types
   resources :ticket_statuses
+
   resources :tickets, only: [:index, :show, :new, :create] do
     member do
       patch :update_status

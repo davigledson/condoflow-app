@@ -63,7 +63,8 @@ class TicketsController < ApplicationController
     if current_user.admin?
       Ticket.all
     elsif current_user.collaborator?
-      Ticket.all  # ajuste aqui se houver escopo por setor no futuro
+      # Vê apenas chamados dos tipos que é responsável
+    Ticket.where(ticket_type: current_user.assigned_ticket_types)
     else
       # Morador vê apenas chamados das suas unidades
       Ticket.where(unit: current_user.units)

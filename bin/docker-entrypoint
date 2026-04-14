@@ -1,8 +1,8 @@
 #!/bin/bash -e
 
-# If running the rails server then create or migrate existing database
-if [ "${@: -2:1}" == "./bin/rails" ] && [ "${@: -1:1}" == "server" ]; then
-  ./bin/rails db:prepare
+# Se for o comando padrão do servidor, roda migrations antes
+if [ "${1}" == "./bin/thrust" ] || [ "${1}" == "rails" ]; then
+  ./bin/rails db:migrate 2>/dev/null || ./bin/rails db:prepare
 fi
 
 exec "${@}"
