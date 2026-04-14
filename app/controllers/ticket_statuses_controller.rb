@@ -3,7 +3,7 @@ class TicketStatusesController < ApplicationController
   before_action :set_ticket_status, only: [:edit, :update, :destroy]
 
   def index
-    @ticket_statuses = TicketStatus.all.order(:name)
+    @ticket_statuses = TicketStatus.all.order(:name).page(params[:page]).per(20)
   end
 
   def new

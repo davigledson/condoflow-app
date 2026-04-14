@@ -1,0 +1,34 @@
+<%# app/views/layouts/_pagination.html.erb %>
+<% if paginator.total_pages > 1 %>
+  <div class="flex items-center justify-between mt-4 text-sm">
+    <span class="text-gray-500 dark:text-gray-400">
+      Página <%= paginator.current_page %> de <%= paginator.total_pages %>
+    </span>
+    <div class="flex gap-1">
+      <% if paginator.first_page? %>
+        <span class="px-3 py-1.5 rounded-lg text-gray-300 dark:text-gray-600 cursor-not-allowed">Anterior</span>
+      <% else %>
+        <%= link_to "Anterior", url_for(page: paginator.current_page - 1),
+              class: "px-3 py-1.5 rounded-lg border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700" %>
+      <% end %>
+
+      <% (1..paginator.total_pages).each do |page| %>
+        <% if page == paginator.current_page %>
+          <span class="px-3 py-1.5 rounded-lg bg-blue-600 text-white"><%= page %></span>
+        <% elsif page == 1 || page == paginator.total_pages || (page - paginator.current_page).abs <= 1 %>
+          <%= link_to page, url_for(page: page),
+                class: "px-3 py-1.5 rounded-lg border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700" %>
+        <% elsif (page - paginator.current_page).abs == 2 %>
+          <span class="px-3 py-1.5 text-gray-400 dark:text-gray-600">...</span>
+        <% end %>
+      <% end %>
+
+      <% if paginator.last_page? %>
+        <span class="px-3 py-1.5 rounded-lg text-gray-300 dark:text-gray-600 cursor-not-allowed">Próximo</span>
+      <% else %>
+        <%= link_to "Próximo", url_for(page: paginator.current_page + 1),
+              class: "px-3 py-1.5 rounded-lg border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700" %>
+      <% end %>
+    </div>
+  </div>
+<% end %>
