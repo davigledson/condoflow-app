@@ -25,7 +25,8 @@
             </span>
           </td>
           <td class="px-4 py-3 flex gap-3">
-            <%= link_to "Editar", edit_user_path(user), class: "text-blue-500 dark:text-blue-400 hover:underline" %>
+            <%= link_to "Ver", user_path(user), class: "text-blue-500 dark:text-blue-400 hover:underline" %>
+            <%= link_to "Editar", edit_user_path(user), class: "text-gray-500 dark:text-gray-400 hover:underline" %>
             <%= button_to "Remover", user_path(user), method: :delete,
                   data: { confirm: "Tem certeza?" },
                   class: "text-red-500 dark:text-red-400 hover:underline bg-transparent border-0 p-0 cursor-pointer text-sm" %>

@@ -2,6 +2,7 @@
 class TicketTypesController < ApplicationController
   before_action :require_admin!
   before_action :set_ticket_type, only: [:edit, :update, :destroy]
+  rescue_from ActiveRecord::InvalidForeignKey, with: :handle_foreign_key_violation
 
   def index
      @ticket_types = TicketType.all.order(:title).page(params[:page]).per(20)
@@ -43,5 +44,9 @@ class TicketTypesController < ApplicationController
 
   def ticket_type_params
     params.require(:ticket_type).permit(:title, :sla_hours)
+  end
+
+  def handle_foreign_key_violation
+    redirect_to ticket_types_path, alert: "Não foi possível remover: existem chamados vinculados a este tipo."
   end
 end
