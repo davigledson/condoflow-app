@@ -8,8 +8,7 @@ WORKDIR /rails
 
 # Troca sqlite3 por libpq (PostgreSQL)
 RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y curl libjemalloc2 libvips libpq-dev && \
-    ln -s /usr/lib/$(uname -m)-linux-gnu/libjemalloc.so.2 /usr/local/lib/libjemalloc.so && \
+    apt-get install --no-install-recommends -y build-essential git libvips-tools libyaml-dev pkg-config libpq-dev && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
 ENV RAILS_ENV="production" \
@@ -21,7 +20,8 @@ ENV RAILS_ENV="production" \
 FROM base AS build
 
 RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y build-essential git libvips libyaml-dev pkg-config libpq-dev && \
+    apt-get install --no-install-recommends -y curl libjemalloc2 libvips-tools libpq-dev && \
+    ln -s /usr/lib/$(uname -m)-linux-gnu/libjemalloc.so.2 /usr/local/lib/libjemalloc.so && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
 COPY vendor/* ./vendor/

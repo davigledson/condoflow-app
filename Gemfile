@@ -43,6 +43,8 @@ gem "thruster", require: false
 
 
 group :development, :test do
+  gem 'factory_bot_rails'
+  gem 'faker'  # opcional, para gerar dados realistas
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
 
@@ -59,6 +61,11 @@ end
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
+  
+
+  gem 'hotwire-livereload' #para live reload
+
+  gem "wdm", "~> 0.2.0", platforms: [:mingw, :x64_mingw, :mswin] #para o monitorar arquivos no windows
 end
 
 group :test do
@@ -69,10 +76,7 @@ end
 
 gem "tailwindcss-rails", "~> 4.4"
 
-gem 'hotwire-livereload' #para live reload
 
-# Gemfile
-gem "wdm", "~> 0.2.0", platforms: [:mingw, :x64_mingw, :mswin] #para o monitorar arquivos no windows
 
 gem "kaminari" # para paginação
 
