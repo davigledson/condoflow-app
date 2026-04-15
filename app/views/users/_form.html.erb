@@ -1,4 +1,5 @@
 <%# app/views/users/_form.html.erb %>
+<% user ||= @user || User.new %>
 <%= form_with model: user, local: true do |f| %>
   <div class="bg-white rounded-xl border border-gray-200 p-6 space-y-4">
 
