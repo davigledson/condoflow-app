@@ -35,22 +35,21 @@
       <% end %>
     </div>
   <% end %>
-
- <% if @ticket.attachments.attached? %>
+<% if @ticket.attachments.attached? %>
   <div class="mt-4 pt-4 border-t border-gray-100 dark:border-gray-700">
     <p class="text-xs font-medium text-gray-500 dark:text-gray-400 mb-2">Anexos</p>
     <div class="flex flex-wrap gap-3">
       <% @ticket.attachments.each do |attachment| %>
-        <div class="relative group w-32"> <!-- largura fixa para cada anexo -->
-          <% if attachment.content_type.start_with?('image/') %>
-            <%= link_to rails_blob_path(attachment, disposition: "attachment"), target: "_blank", class: "block" do %>
-              <%= image_tag attachment.variant(resize_to_limit: [200, 200]), 
+        <div class="relative group w-32">
+          <% if attachment.image? %>
+            <%= link_to rails_blob_path(attachment, disposition: "inline"), target: "_blank", class: "block" do %>
+              <%= image_tag attachment.variant(resize_to_limit: [200, 200]),
                     class: "w-full h-32 object-cover rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 hover:opacity-90 transition",
                     alt: attachment.filename %>
-              <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 rounded-lg transition"></div>
+              <div class="absolute inset-0 bg-opacity-0 group-hover:bg-opacity-20 rounded-lg transition"></div>
             <% end %>
           <% else %>
-            <%= link_to rails_blob_path(attachment, disposition: "attachment"), 
+            <%= link_to rails_blob_path(attachment, disposition: "attachment"),
                   class: "flex flex-col items-center justify-center h-32 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-100 transition" do %>
               <svg class="w-8 h-8 text-gray-400 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"/>
@@ -64,7 +63,6 @@
     </div>
   </div>
 <% end %>
-
   <% if @ticket.ticket_status_histories.any? %>
     <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
       <h2 class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">Histórico de Status</h2>
