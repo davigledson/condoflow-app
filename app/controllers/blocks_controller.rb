@@ -34,10 +34,13 @@ class BlocksController < ApplicationController
     end
   end
 
-  def destroy
-    @block.destroy
+ def destroy
+  if @block.destroy
     redirect_to blocks_path, notice: "Bloco removido."
+  else
+    redirect_to blocks_path, alert: @block.errors.full_messages.to_sentence
   end
+end
 
   private
 

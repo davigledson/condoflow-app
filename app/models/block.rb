@@ -8,6 +8,8 @@ class Block < ApplicationRecord
 
   after_create :generate_units
 
+  before_destroy :check_for_tickets, prepend: true
+
   private
 
   def generate_units
@@ -19,6 +21,13 @@ class Block < ApplicationRecord
           identifier: "#{identifier}-#{floor.to_s.rjust(2, '0')}-#{num.to_s.rjust(2, '0')}"
         )
       end
+    end
+  end
+
+  def check_for_tickets
+    if units.joins(:tickets).exists?
+      errors.add(:base, "Não é possível remover o bloco porque existem chamados associados a suas unidades.")
+      throw :abort
     end
   end
 end

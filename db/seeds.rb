@@ -22,9 +22,24 @@ admin = User.create!(
   role: :admin
 )
 
+admin1 = User.create!(
+  name: "Keyllian",
+  email: "keyllian@dunnas.com",
+  password: "123456",
+  password_confirmation: "123456",
+  role: :admin
+)
+
 collaborator = User.create!(
   name: "Colaborador",
   email: "colaborador@condominio.com",
+  password: "123456",
+  password_confirmation: "123456",
+  role: :collaborator
+)
+collaborator1 = User.create!(
+  name: "Davi Gledson",
+  email: "davi@condominio.com",
   password: "123456",
   password_confirmation: "123456",
   role: :collaborator
