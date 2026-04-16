@@ -1,6 +1,6 @@
 # Setup Local (Sem Docker)
 
-Este guia explica como rodar o CondoFlow App diretamente na sua máquina.
+Este guia explica como rodar a aplicação diretamente na sua máquina.
 
 ---
 
@@ -41,12 +41,15 @@ config/credentials.yml.enc
 
 # 4. Configurar variáveis de ambiente
 
-Crie .env ou .env.development:
+Crie um .env:
 
 ```bash
-DB_USERNAME=condoflow
-DB_PASSWORD=condoflow
+#geralmente e postgres mesmo
+DB_USERNAME=username_do_postgres
+
+DB_PASSWORD=senha
 DB_HOST=localhost
+DB_PORT=5432
 
 RAILS_MASTER_KEY=sua_master_key
 ```

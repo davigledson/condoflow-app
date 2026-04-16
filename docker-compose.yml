@@ -20,12 +20,14 @@ services:
     depends_on:
       db:
         condition: service_healthy
-    env_file:
-      - .env.production
+   
     environment:
-      MYAPP_DB_USERNAME: condoflow
-      MYAPP_DB_PASSWORD: condoflow
-      MYAPP_DB_HOST: db
+      DB_USERNAME: condoflow
+      DB_PASSWORD: condoflow
+      DB_HOST: db
+      DB_PORT: 5432
+      RAILS_ENV: ${RAILS_ENV:-development}
+      RAILS_MASTER_KEY: ${RAILS_MASTER_KEY}
       RAILS_LOG_TO_STDOUT: "true"
     ports:
       - "3000:80"

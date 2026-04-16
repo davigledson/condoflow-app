@@ -29,10 +29,13 @@ class TicketStatusesController < ApplicationController
     end
   end
 
-  def destroy
-    @ticket_status.destroy
+def destroy
+  if @ticket_status.destroy
     redirect_to ticket_statuses_path, notice: "Status removido."
+  else
+    redirect_to ticket_statuses_path, alert: @ticket_status.errors.full_messages.to_sentence
   end
+end
 
   private
 
