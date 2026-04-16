@@ -439,10 +439,25 @@ chore(docker): configuração do Docker para ambiente de produção
 | Testes unitários (Minitest + Factory Bot) | ✅ Implementado |
 | Docker Compose (`docker compose up`) | ✅ Implementado |
 | Auditoria de status via `ticket_status_histories` | ✅ Implementado |
-| GitFlow + Conventional Commits | ✅ Implementado |
-| Deploy em ambiente público | ⬜ Não implementado nesta versão |
+| GitFlow + Conventional Commits + Commits Assinados | ✅ Implementado |
+| Deploy em ambiente público | ✅ [Acesse aqui](https://condoflow-app.onrender.com) |
+---
+
+ 
+## Deploy
+
+A aplicação está rodando em produção no **Render** (PaaS gratuito).  
+Link: [https://condoflow-app.onrender.com](https://condoflow-app.onrender.com)
+
+O deploy foi realizado diretamente a partir da branch `main` do repositório GitHub. O ambiente de produção utiliza:
+- PostgreSQL gerenciado pelo Render
+- Variáveis de ambiente configuradas via dashboard
+- Build automático a cada push na `main`
+
+>  Por se tratar de um plano gratuito, o serviço pode “dormir” após períodos de inatividade. O primeiro acesso após um tempo ocioso pode levar alguns segundos para reativar o container.
 
 ---
+
 
 ## Contato
 
