@@ -1,0 +1,113 @@
+<%# app/views/blocks/index.html.erb %>
+
+<div class="flex items-center justify-between mb-6">
+  <h1 class="text-xl font-semibold text-gray-800 dark:text-gray-100">Blocos</h1>
+  <%= link_to "Novo Bloco", new_block_path, class: "bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700" %>
+</div>
+
+<!-- TABELA -->
+<div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden mb-8">
+  <table class="w-full text-sm">
+    <thead class="bg-gray-50 dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400 text-left">
+      <tr>
+        <th class="px-4 py-3">Identificador</th>
+        <th class="px-4 py-3">Andares</th>
+        <th class="px-4 py-3">Aptos por andar</th>
+        <th class="px-4 py-3">Total de unidades</th>
+        <th class="px-4 py-3"></th>
+      </tr>
+    </thead>
+
+    <tbody class="divide-y divide-gray-100 dark:divide-gray-700">
+      <% @blocks.each do |block| %>
+        <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
+          <td class="px-4 py-3 font-medium text-gray-700 dark:text-gray-200">
+            Bloco <%= block.identifier %>
+          </td>
+          <td class="px-4 py-3 text-gray-500 dark:text-gray-400"><%= block.floors_count %></td>
+          <td class="px-4 py-3 text-gray-500 dark:text-gray-400"><%= block.units_per_floor %></td>
+          <td class="px-4 py-3 text-gray-500 dark:text-gray-400"><%= block.units.count %></td>
+          <td class="px-4 py-3 flex gap-3">
+            <%= link_to "Ver unidades", block_path(block), class: "text-blue-500 dark:text-blue-400 hover:underline" %>
+            <%= link_to "Editar", edit_block_path(block), class: "text-gray-500 dark:text-gray-400 hover:underline" %>
+            <%= button_to "Remover", block_path(block),
+                  method: :delete,
+                  data: { confirm: "Remover o bloco e todas as unidades?" },
+                  class: "text-red-500 dark:text-red-400 hover:underline bg-transparent border-0 p-0 cursor-pointer text-sm" %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<!-- WIDGETS / CARDS (com ícones) -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-12">
+  <!-- Card 1: Total de blocos -->
+  <div class="group bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100 dark:border-gray-700 p-5">
+    <div class="flex items-center justify-between">
+      <div>
+        <p class="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider">Total de Blocos</p>
+        <p class="text-3xl font-extrabold text-gray-800 dark:text-white mt-1"><%= @blocks.total_count %></p>
+      </div>
+      <div class="rounded-full bg-blue-50 dark:bg-blue-900/30 p-3 text-blue-500 dark:text-blue-400">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-2 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- Card 2: Total de unidades -->
+  <div class="group bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100 dark:border-gray-700 p-5">
+    <div class="flex items-center justify-between">
+      <div>
+        <p class="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider">Total de Unidades</p>
+        <p class="text-3xl font-extrabold text-gray-800 dark:text-white mt-1"><%= Unit.count %></p>
+      </div>
+      <div class="rounded-full bg-green-50 dark:bg-green-900/30 p-3 text-green-500 dark:text-green-400">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- Card 3: Média de unidades/bloco -->
+  <div class="group bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100 dark:border-gray-700 p-5">
+    <div class="flex items-center justify-between">
+      <div>
+        <p class="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider">Média/Bloco</p>
+        <p class="text-3xl font-extrabold text-gray-800 dark:text-white mt-1"><%= @blocks.total_count > 0 ? (Unit.count.to_f / @blocks.total_count).round(1) : 0 %></p>
+      </div>
+      <div class="rounded-full bg-purple-50 dark:bg-purple-900/30 p-3 text-purple-500 dark:text-purple-400">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- Card 4: Bloco com mais unidades -->
+  <div class="group bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100 dark:border-gray-700 p-5">
+    <div class="flex items-center justify-between">
+      <div>
+        <p class="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider">Bloco + Unidades</p>
+        <p class="text-3xl font-extrabold text-gray-800 dark:text-white mt-1">
+          <% max_block = Block.all.max_by { |b| b.units.count } %>
+          <%= max_block ? "#{max_block.identifier} (#{max_block.units.count})" : "-" %>
+        </p>
+      </div>
+      <div class="rounded-full bg-amber-50 dark:bg-amber-900/30 p-3 text-amber-500 dark:text-amber-400">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGINAÇÃO -->
+<div class="mt-10">
+  <%= render "layouts/pagination", paginator: @blocks %>
+</div>

@@ -1,4 +1,5 @@
 class CommentsController < ApplicationController
+  
   before_action :set_ticket
 
   def create
@@ -12,11 +13,13 @@ class CommentsController < ApplicationController
 
   private
 
-  def set_ticket
-    @ticket = Ticket.find(params[:ticket_id])
-  end
+ def set_ticket
+  @ticket = Ticket.unscoped.find(params[:ticket_id])
+rescue ActiveRecord::RecordNotFound
+  redirect_to tickets_path, alert: "Chamado não encontrado."
+end
 
   def comment_params
-    params.require(:comment).permit(:body)
+    params.require(:comment).permit(:body, attachments: [])
   end
 end

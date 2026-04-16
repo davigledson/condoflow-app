@@ -3,7 +3,7 @@ class TicketStatusesController < ApplicationController
   before_action :set_ticket_status, only: [:edit, :update, :destroy]
 
   def index
-    @ticket_statuses = TicketStatus.all.order(:name)
+    @ticket_statuses = TicketStatus.all.order(:name).page(params[:page]).per(20)
   end
 
   def new
@@ -29,10 +29,13 @@ class TicketStatusesController < ApplicationController
     end
   end
 
-  def destroy
-    @ticket_status.destroy
+def destroy
+  if @ticket_status.destroy
     redirect_to ticket_statuses_path, notice: "Status removido."
+  else
+    redirect_to ticket_statuses_path, alert: @ticket_status.errors.full_messages.to_sentence
   end
+end
 
   private
 

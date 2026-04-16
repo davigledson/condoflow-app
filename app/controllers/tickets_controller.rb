@@ -4,8 +4,9 @@ class TicketsController < ApplicationController
   def index
     @tickets = scoped_tickets.includes(:unit, :ticket_type, :ticket_status, :user)
                              .order(created_at: :desc)
+                             .page(params[:page]).per(15)
 
-    # Filtros (usados pelo collaborator e admin)
+    # Filtros (usados pelo colaborador e admin)
     @tickets = @tickets.where(ticket_status_id: params[:status_id]) if params[:status_id].present?
     @tickets = @tickets.where(ticket_type_id: params[:type_id])     if params[:type_id].present?
     @tickets = @tickets.joins(:unit).where(units: { block_id: params[:block_id] }) if params[:block_id].present?
@@ -17,13 +18,19 @@ class TicketsController < ApplicationController
   end
 
   def new
-    redirect_to root_path, alert: "Acesso negado." unless current_user.resident?
+    unless current_user.resident?
+      redirect_to root_path, alert: "Acesso negado."
+      return
+    end
     @ticket = Ticket.new
     @units  = current_user.units
   end
 
   def create
-    redirect_to root_path, alert: "Acesso negado." unless current_user.resident?
+    unless current_user.resident?
+      redirect_to root_path, alert: "Acesso negado."
+      return
+    end
     @ticket = Ticket.new(ticket_params.merge(user: current_user))
     if @ticket.save
       redirect_to @ticket, notice: "Chamado aberto com sucesso."
@@ -35,11 +42,9 @@ class TicketsController < ApplicationController
 
   # PATCH /tickets/:id/update_status — só admin e collaborator
   def update_status
-    require_admin_or_collaborator!
+    return unless require_admin_or_collaborator!
 
-    previous_status = @ticket.ticket_status
     if @ticket.update(ticket_status_id: params[:ticket_status_id])
-      # Registra no histórico
       @ticket.ticket_status_histories.create!(
         ticket_status: @ticket.ticket_status,
         user: current_user
@@ -56,6 +61,7 @@ class TicketsController < ApplicationController
     @ticket = scoped_tickets.find(params[:id])
   rescue ActiveRecord::RecordNotFound
     redirect_to tickets_path, alert: "Chamado não encontrado."
+    return
   end
 
   # Define o escopo de visibilidade por papel
@@ -63,14 +69,23 @@ class TicketsController < ApplicationController
     if current_user.admin?
       Ticket.all
     elsif current_user.collaborator?
-      Ticket.all  # ajuste aqui se houver escopo por setor no futuro
+      Ticket.where(ticket_type: current_user.assigned_ticket_types)
     else
-      # Morador vê apenas chamados das suas unidades
       Ticket.where(unit: current_user.units)
     end
   end
 
   def ticket_params
-    params.require(:ticket).permit(:unit_id, :ticket_type_id, :description)
+    params.require(:ticket).permit(:unit_id, :ticket_type_id, :description, attachments: [])
+  end
+
+  # Método auxiliar que verifica se o usuário atual pode alterar status
+  def require_admin_or_collaborator!
+    if current_user.admin? || current_user.collaborator?
+      true
+    else
+      redirect_to root_path, alert: "Acesso negado."
+      false
+    end
   end
 end

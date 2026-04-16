@@ -8,6 +8,7 @@ Bundler.require(*Rails.groups)
 
 module CondoFlow
   class Application < Rails::Application
+   
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 8.1
 
@@ -23,5 +24,9 @@ module CondoFlow
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+
+    config.generators do |g|
+      g.test_framework :minitest, spec: true, fixture: false
+    end
   end
 end

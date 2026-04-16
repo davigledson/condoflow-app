@@ -1,29 +1,67 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= content_for(:title) || "Condo Flow" %></title>
+    <title><%= content_for(:title) || "CondoFlow" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="application-name" content="Condo Flow">
     <meta name="mobile-web-app-capable" content="yes">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-
     <%= yield :head %>
-
-    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
-    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
-
     <link rel="icon" href="/icon.png" type="image/png">
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/icon.png">
-
-    <%# Includes all stylesheet files in app/assets/stylesheets %>
-    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= favicon_link_tag 'favicon.ico' %>
+    <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
+
+    <%# Aplica o tema ANTES de renderizar para evitar flash de tela branca %>
+    <script>
+      const saved = localStorage.getItem('theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (saved === 'dark' || (!saved && prefersDark)) {
+        document.documentElement.classList.add('dark');
+      }
+    </script>
   </head>
 
-  <body>
-    <%= yield %>
+  <body class="bg-gray-100 dark:bg-gray-900 min-h-screen flex">
+
+    <%= render "layouts/navbar" %>
+
+    <div class="flex-1 flex flex-col md:ml-56 bg-gray-100 dark:bg-gray-900">
+      <main class="flex-1 px-6 py-6 max-w-5xl w-full mx-auto">
+        <%= render "layouts/flash" %>
+        <%= yield %>
+      </main>
+
+      <footer class="mt-10 border-t border-gray-200 dark:border-gray-700 bg-white/60 dark:bg-gray-800/40 backdrop-blur-sm">
+  <div class="max-w-5xl mx-auto px-6 py-6 flex flex-col sm:flex-row items-center justify-between gap-3">
+
+    <!-- Esquerda -->
+    <div class="text-sm text-gray-500 dark:text-gray-400">
+      <span class="font-medium text-gray-700 dark:text-gray-300">CondoFlow</span>
+      <span class="ml-1">© <%= Date.current.year %> — Todos os direitos reservados</span>
+    </div>
+
+    <div class="flex items-center gap-16 text-sm">
+  <a href="#" class="text-gray-500 hover:text-blue-600 transition">
+    Suporte
+  </a>
+
+  <a href="#" class="text-gray-500 hover:text-blue-600 transition">
+    Privacidade
+  </a>
+
+  <a href="#" class="text-gray-500 hover:text-blue-600 transition">
+    Termos
+  </a>
+</div>
+
+  </div>
+</footer>
+    </div>
+
   </body>
 </html>

@@ -1,0 +1,56 @@
+@startuml
+
+top to bottom direction
+
+' ======================
+' ATORES (hierarquia)
+' ======================
+actor "Usuário" as User
+actor "Colaborador" as Col
+actor "Administrador" as Adm
+actor "Morador" as Mor
+
+User <|-- Mor
+User <|-- Col
+User <|-- Adm
+
+rectangle "Sistema de Chamados" {
+
+  usecase "Login" as UC_Login
+
+  usecase "Visualizar chamados" as UC_Ver
+  usecase "Abrir chamado" as UC_Abrir
+  usecase "Editar chamado" as UC_Editar
+  usecase "Atualizar status" as UC_Status
+  usecase "Comentar chamado" as UC_Comentar
+  usecase "Anexar arquivo" as UC_Anexo
+
+  usecase "Gerenciar sistema" as UC_Admin
+  usecase "Configurar sistema" as UC_Config
+}
+
+' ======================
+' Relações principais
+' ======================
+User --> UC_Login
+
+User --> UC_Ver
+Mor --> UC_Abrir
+
+Col --> UC_Status
+Col --> UC_Comentar
+Col --> UC_Ver
+
+Adm --> UC_Admin
+Adm --> UC_Config
+Adm --> UC_Editar
+Adm --> UC_Status
+Adm --> UC_Comentar
+
+' ======================
+' Regras
+' ======================
+UC_Comentar .> UC_Anexo : include
+Mor -[#red,dashed]-> UC_Editar : proibido
+
+@enduml

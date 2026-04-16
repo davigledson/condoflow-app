@@ -1,0 +1,43 @@
+<%# app/views/blocks/show.html.erb %>
+<div class="flex items-center justify-between mb-6">
+  <h1 class="text-xl font-semibold text-gray-800 dark:text-gray-100">Bloco <%= @block.identifier %></h1>
+  <%= link_to "Voltar", blocks_path, class: "text-sm text-gray-500 hover:underline" %>
+</div>
+
+<div class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+  <table class="w-full text-sm">
+    <thead class="bg-gray-50 border-b border-gray-200 text-gray-500 text-left">
+      <tr>
+        <th class="px-4 py-3">Unidade</th>
+        <th class="px-4 py-3">Andar</th>
+        <th class="px-4 py-3">Moradores vinculados</th>
+        <th class="px-4 py-3">Vincular morador</th>
+      </tr>
+    </thead>
+    <tbody class="divide-y divide-gray-100">
+      <% @units.each do |unit| %>
+        <tr class="hover:bg-gray-50">
+          <td class="px-4 py-3 font-medium text-gray-700"><%= unit.identifier %></td>
+          <td class="px-4 py-3 text-gray-500"><%= unit.floor_number %></td>
+          <td class="px-4 py-3 text-gray-500">
+            <% if unit.residents.any? %>
+              <%= unit.residents.map(&:name).join(", ") %>
+            <% else %>
+              <span class="text-gray-300">Nenhum</span>
+            <% end %>
+          </td>
+          <td class="px-4 py-3">
+  <%= form_with url: link_resident_block_unit_path(block_id: @block.id, id: unit.id),
+        method: :post, local: true, class: "flex gap-2" do |f| %>
+    <%= f.select :user_id,
+          options_from_collection_for_select(User.where(role: :resident), :id, :name),
+          { include_blank: "Selecionar..." },
+          class: "border border-gray-300 rounded-lg px-2 py-1 text-xs" %>
+    <%= f.submit "Vincular", class: "bg-gray-700 text-white px-3 py-1 rounded-lg text-xs hover:bg-gray-800 cursor-pointer" %>
+  <% end %>
+</td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

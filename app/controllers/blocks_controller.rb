@@ -4,7 +4,7 @@ class BlocksController < ApplicationController
   before_action :set_block, only: [:show, :edit, :update, :destroy]
 
   def index
-    @blocks = Block.includes(:units).order(:identifier)
+     @blocks = Block.includes(:units).order(:identifier).page(params[:page]).per(20)
   end
 
   def show
@@ -34,10 +34,13 @@ class BlocksController < ApplicationController
     end
   end
 
-  def destroy
-    @block.destroy
+ def destroy
+  if @block.destroy
     redirect_to blocks_path, notice: "Bloco removido."
+  else
+    redirect_to blocks_path, alert: @block.errors.full_messages.to_sentence
   end
+end
 
   private
 

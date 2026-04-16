@@ -1,8 +1,17 @@
 #!/bin/bash -e
 
-# If running the rails server then create or migrate existing database
-if [ "${@: -2:1}" == "./bin/rails" ] && [ "${@: -1:1}" == "server" ]; then
-  ./bin/rails db:prepare
+# Se for o comando padrão do servidor, roda migrations e seeds (apenas se necessário)
+if [ "${1}" == "./bin/thrust" ] || [ "${1}" == "rails" ]; then
+  # Executa migrações
+  ./bin/rails db:migrate 2>/dev/null || ./bin/rails db:prepare
+
+  # Verifica se a tabela 'users' existe e está vazia (ajuste conforme seu modelo)
+  if ./bin/rails runner "exit(User.count.zero? ? 0 : 1)" 2>/dev/null; then
+    echo "Banco de dados vazio. Executando seeds..."
+    ./bin/rails db:seed
+  else
+    echo "Banco de dados já populado. Pulando seeds."
+  fi
 fi
 
 exec "${@}"

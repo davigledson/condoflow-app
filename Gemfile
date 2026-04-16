@@ -40,10 +40,11 @@ gem "kamal", require: false
 # Add HTTP asset caching/compression and X-Sendfile acceleration to Puma [https://github.com/basecamp/thruster/]
 gem "thruster", require: false
 
-# Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
-gem "image_processing", "~> 1.2"
+
 
 group :development, :test do
+  gem 'factory_bot_rails'
+  gem 'faker'  # opcional, para gerar dados realistas
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
 
@@ -60,6 +61,11 @@ end
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
+  
+
+  gem 'hotwire-livereload' #para live reload
+
+  gem "wdm", "~> 0.2.0", platforms: [:mingw, :x64_mingw, :mswin] #para o monitorar arquivos no windows
 end
 
 group :test do
@@ -67,3 +73,14 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
 end
+
+gem "tailwindcss-rails", "~> 4.4"
+
+
+
+gem "kaminari" # para paginação
+
+#fazer o previews das imagems
+# Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
+gem "image_processing", "~> 1.2"
+gem 'mini_magick'
