@@ -30,15 +30,37 @@
 
     <%= render "layouts/navbar" %>
 
-    <div class="flex-1 flex flex-col ml-56 bg-gray-100 dark:bg-gray-900">
+    <div class="flex-1 flex flex-col md:ml-56 bg-gray-100 dark:bg-gray-900">
       <main class="flex-1 px-6 py-6 max-w-5xl w-full mx-auto">
         <%= render "layouts/flash" %>
         <%= yield %>
       </main>
 
-      <footer class="text-center text-sm text-gray-400 dark:text-gray-600 py-4">
-        Condomínio &copy; <%= Date.current.year %>
-      </footer>
+      <footer class="mt-10 border-t border-gray-200 dark:border-gray-700 bg-white/60 dark:bg-gray-800/40 backdrop-blur-sm">
+  <div class="max-w-5xl mx-auto px-6 py-6 flex flex-col sm:flex-row items-center justify-between gap-3">
+
+    <!-- Esquerda -->
+    <div class="text-sm text-gray-500 dark:text-gray-400">
+      <span class="font-medium text-gray-700 dark:text-gray-300">CondoFlow</span>
+      <span class="ml-1">© <%= Date.current.year %> — Todos os direitos reservados</span>
+    </div>
+
+    <div class="flex items-center gap-16 text-sm">
+  <a href="#" class="text-gray-500 hover:text-blue-600 transition">
+    Suporte
+  </a>
+
+  <a href="#" class="text-gray-500 hover:text-blue-600 transition">
+    Privacidade
+  </a>
+
+  <a href="#" class="text-gray-500 hover:text-blue-600 transition">
+    Termos
+  </a>
+</div>
+
+  </div>
+</footer>
     </div>
 
   </body>
