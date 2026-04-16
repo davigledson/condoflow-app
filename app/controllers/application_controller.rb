@@ -29,4 +29,5 @@ class ApplicationController < ActionController::Base
   def require_resident!
     redirect_to root_path, alert: "Acesso negado." unless current_user.resident?
   end
+  
 end
