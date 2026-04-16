@@ -221,6 +221,21 @@ Link para melhor visualização: https://dbdiagram.io/d/condoflow-dunnas-688e6a4
 
 ## Instruções de Execução
 
+### Execução com Docker
+
+O projeto pode ser executado localmente com apenas um comando:
+
+
+
+```bash
+docker compose up --build
+```
+
+O `docker-compose.yml` sobe a aplicação Rails e o PostgreSQL automaticamente, executa as migrations e o seed. Nenhuma instalação local de Ruby, Rails ou PostgreSQL é necessária.
+
+---
+
+### Para Setup Local
 ### Pré-requisitos
 
 - Ruby **3.3+**
@@ -305,22 +320,6 @@ Acesse em: [http://localhost:3000](http://localhost:3000)
 
 ---
 
-### Execução com Docker
-
-Siga esses passos aqui:
-[configuraçoes para docker](docs/setup-docker.md)
-
-O projeto pode ser executado localmente com apenas um comando:
-
-
-
-```bash
-docker compose up
-```
-
-O `docker-compose.yml` sobe a aplicação Rails e o PostgreSQL automaticamente, executa as migrations e o seed. Nenhuma instalação local de Ruby, Rails ou PostgreSQL é necessária.
-
----
 
 ## Credenciais Iniciais
 
@@ -443,6 +442,17 @@ chore(docker): configuração do Docker para ambiente de produção
 | Deploy em ambiente público | ✅ [Acesse aqui](https://condoflow-app.onrender.com) |
 ---
 
+##  Melhorias de Frontend
+
+| Item | Status |
+|---|---|
+| Modo escuro (Dark Mode) | ✅ Implementado |
+| Interface responsiva (mobile, tablet e desktop) | ✅ Implementado |
+| Widgets informativos no dashboard | ✅ Implementado |
+
+#### Observação
+
+Essas melhorias foram aplicadas com foco em **experiência do usuário (UX)**, consistência visual e responsividade, utilizando Tailwind CSS.
  
 ## Deploy
 
