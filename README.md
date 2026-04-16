@@ -31,7 +31,7 @@ Aplicação web desenvolvida em **Ruby on Rails 8.1** seguindo o padrão **MVC**
 
 ### Framework e Arquitetura
 
-**Ruby on Rails 8.1 com padrão MVC** foi escolhido por eu ter uma experiencia previa e por oferecer um conjunto maduro de ferramentas que aceleram o desenvolvimento sem abrir mão de organização:
+**Ruby on Rails 8.1 com padrão MVC** Como eu tenho uma experiencia previa e por oferecer um conjunto maduro de ferramentas que aceleram o desenvolvimento sem abrir mão de organização:
 
 - **Convenção sobre configuração**: a estrutura de pastas e as convenções do Rails mantêm o código previsível e fácil de navegar.
 - **Active Record**: o ORM nativo simplifica os relacionamentos entre modelos (associações, validações, callbacks) e reduz a quantidade de SQL manual.
@@ -39,7 +39,7 @@ Aplicação web desenvolvida em **Ruby on Rails 8.1** seguindo o padrão **MVC**
 
 ### Banco de Dados
 
-**PostgreSQL** foi utilizado em vez do SQLite padrão do Rails por oferecer suporte robusto a constraints de integridade referencial, melhor desempenho em ambientes concorrentes e ser amplamente adotado em produção. Todos os relacionamentos possuem `foreign_key` explícita no schema, garantindo consistência dos dados no nível do banco.
+**PostgreSQL** por oferecer suporte robusto a constraints de integridade referencial, melhor desempenho em ambientes concorrentes e ser amplamente adotado em produção. Todos os relacionamentos possuem `foreign_key` explícita no schema, garantindo consistência dos dados no nível do banco.
 
 ### Autenticação
 
@@ -377,7 +377,7 @@ O desenvolvimento seguiu o modelo **GitFlow** com a seguinte estrutura de branch
 
 | Branch | Finalidade |
 |---|---|
-| `main` | Código estável de produção |
+| `master` | Código estável de produção |
 | `dev` | Branch de integração de features |
 | `feature/*` | Desenvolvimento de novas funcionalidades |
 | `fix/*` | Correções de bugs |
@@ -387,11 +387,11 @@ O desenvolvimento seguiu o modelo **GitFlow** com a seguinte estrutura de branch
 
 ```
 feature/nome-da-feature ──┐
-                          ├──► develop ──► release/x.x.x ──► main
+                          ├──► dev ──► release/x.x.x ──► master
 fix/nome-do-fix ──────────┘
 ```
 
-Toda funcionalidade foi desenvolvida em sua própria branch criada a partir de `develop`. A branch `main` recebeu merges apenas via `release`, garantindo que somente código revisado e testado chegue à produção.
+Toda funcionalidade foi desenvolvida em sua própria branch criada a partir de `develop`. A branch `master` recebeu merges apenas via `release`, garantindo que somente código revisado e testado chegue à produção.
 
 ### Conventional Commits
 
@@ -435,20 +435,20 @@ chore(docker): configuração do Docker para ambiente de produção
 
 | Item | Status |
 |---|---|
-| Testes unitários (Minitest + Factory Bot) | ✅ Implementado |
-| Docker Compose (`docker compose up`) | ✅ Implementado |
-| Auditoria de status via `ticket_status_histories` | ✅ Implementado |
-| GitFlow + Conventional Commits + Commits Assinados | ✅ Implementado |
-| Deploy em ambiente público | ✅ [Acesse aqui](https://condoflow-app.onrender.com) |
+| Testes unitários (Minitest + Factory Bot) |  **Implementado** |
+| Docker Compose (`docker compose up`) | **Implementado** |
+| Recurso de Auditoria via `ticket_status_histories` | **Implementado** |
+| GitFlow + Conventional Commits + Commits Assinados | **Implementado** |
+| Deploy em ambiente público |  [Acesse aqui](https://condoflow-app.onrender.com) |
 ---
 
 ##  Melhorias de Frontend
 
 | Item | Status |
 |---|---|
-| Modo escuro (Dark Mode) | ✅ Implementado |
-| Interface responsiva (mobile, tablet e desktop) | ✅ Implementado |
-| Widgets informativos no dashboard | ✅ Implementado |
+| Modo escuro (Dark Mode) | **Implementado** |
+| Interface responsiva (mobile, tablet e desktop) | **Implementado**|
+| Widgets informativos no dashboard | **Implementado** |
 
 #### Observação
 
@@ -459,10 +459,10 @@ Essas melhorias foram aplicadas com foco em **experiência do usuário (UX)**, c
 A aplicação está rodando em produção no **Render** (PaaS gratuito).  
 Link: [https://condoflow-app.onrender.com](https://condoflow-app.onrender.com)
 
-O deploy foi realizado diretamente a partir da branch `main` do repositório GitHub. O ambiente de produção utiliza:
+O deploy foi realizado diretamente a partir da branch `master` do repositório GitHub. O ambiente de produção utiliza:
 - PostgreSQL gerenciado pelo Render
 - Variáveis de ambiente configuradas via dashboard
-- Build automático a cada push na `main`
+- Build automático a cada push na `master`
 
 >  Por se tratar de um plano gratuito, o serviço pode “dormir” após períodos de inatividade. O primeiro acesso após um tempo ocioso pode levar alguns segundos para reativar o container.
 
