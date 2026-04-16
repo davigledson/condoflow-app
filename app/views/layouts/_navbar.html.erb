@@ -68,6 +68,13 @@
       <% end %>
 
     <% end %>
+    <%= link_to admin_auditoria_path,
+      class: "flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors #{request.path.start_with?('/admin/auditoria') ? 'bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-400' : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-800 dark:hover:text-gray-200'}" do %>
+  <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+    <path stroke-linecap="round" stroke-linejoin="round" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+  </svg>
+  Auditoria
+<% end %>
   </nav>
 
   <div class="border-t border-gray-100 dark:border-gray-700 px-4 py-4 space-y-2">

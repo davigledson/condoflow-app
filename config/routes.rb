@@ -13,6 +13,11 @@ Rails.application.routes.draw do
     end
   end
 
+  namespace :admin do
+  get "auditoria", to: "audits#index"
+end
+
+  
   resources :blocks do
     resources :units, only: [] do
       member do
