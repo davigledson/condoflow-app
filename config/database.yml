@@ -19,8 +19,4 @@ test:
 production:
   adapter: postgresql
   encoding: unicode
-  database: condoflow_app_production
-  username: <%= ENV["MYAPP_DB_USERNAME"] %>
-  password: <%= ENV["MYAPP_DB_PASSWORD"] %>
-  host: <%= ENV["MYAPP_DB_HOST"] %>
-  port: 5432
+  url: <%= ENV["DATABASE_URL"] %>
