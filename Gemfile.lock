@@ -84,7 +84,7 @@ GEM
     bcrypt_pbkdf (1.1.2-x64-mingw-ucrt)
     bigdecimal (4.1.1)
     bindex (0.8.1)
-    bootsnap (1.23.0)
+    bootsnap (1.24.6)
       msgpack (~> 1.2)
     brakeman (8.0.4)
       racc
@@ -200,7 +200,7 @@ GEM
       logger
     mini_mime (1.1.5)
     minitest (5.27.0)
-    msgpack (1.8.0)
+    msgpack (1.8.1)
     net-imap (0.6.3)
       date
       net-protocol
